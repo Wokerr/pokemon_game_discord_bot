@@ -1,0 +1,1 @@
+from .fetch_pokemons import get_pokemon_name, get_pokemon_type
