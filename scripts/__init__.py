@@ -1,1 +1,1 @@
-from .fetch_pokemons import get_pokemon_name, get_pokemon_type
+from .fetch_pokemons import get_data_for_url
