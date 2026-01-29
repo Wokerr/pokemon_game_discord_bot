@@ -1,44 +1,40 @@
-# import discord
-# from discord.ext import commands
-# from dotenv import load_dotenv
-# import os
-# from apitest import test1
-# from db import insert_pokemons_names
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
+import os
+import aiohttp
+from db import create_pool
+from utils import get_random_pokemon, get_type_and_img_url
 
-# load_dotenv()
+load_dotenv()
 
-# intents = discord.Intents.default()
-# intents.message_content = True
+intents = discord.Intents.default()
+intents.message_content = True
+intents.guilds = True
+intents.members = True
 
-# bot = commands.Bot(command_prefix="w!", intents= intents)
+bot = commands.Bot(command_prefix="w!", intents= intents)
 
-# @bot.event
-# async def on_ready():
-#     print(f'Logged in as {bot.user}!')  
+@bot.event
+async def on_ready():
+    global session
+    global pool
+    pool = create_pool()
+    if not session:
+        session = aiohttp.ClientSession()
 
-#     # channel = bot.get_channel(839668007621361704)
-#     # await channel.send("El mejor bot a despertado mi gente")
+async def on_close():
+    if session and not session.close():
+        await session.close()
 
-# # @bot.command()
-# # class Client(discord.Client):
-# #     async def on_ready(self):
-# #         print(f"Logged in as {self.user}!")
+@bot.command()
+async def pokemon(ctx):
+    pass
+    # pokemon_to_inte, pokemon_to_send = await get_random_pokemon()
+    # pokemon_type, pokemon_img_url = await get_type_and_img_url(pokemon_to_inte)
+    # print(pokemon_img_url)
+    # embed = discord.Embed(title= pokemon_to_send)
+    # embed.set_image(url=pokemon_img_url)
+    # await ctx.send(embed=embed)
 
-# #     async def on_message(self,message):
-# #         if message.author == self.user:
-# #             return
-        
-# #         if message.content == "!ping":
-# #             await message.channel.send("Soy la mera verga mi compa")
-        
-# #     async def evan(self):
-
-# # @bot.command()
-# # async def test(ctx):
-# #     await ctx.send(test1)
-
-
-
-# bot.run(os.getenv("BOT_TOKEN"))
-
-insert_pokemons_names("https://pokeapi.co/api/v2/pokemon/?limit=1350")
+bot.run(os.getenv("BOT_TOKEN"))
