@@ -1,1 +1,1 @@
-from .database_conn import get_pool, insert_pokemons_names
+from .database_conn import create_pool
